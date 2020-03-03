@@ -1,10 +1,19 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
+import csv
 
 app = Flask(__name__)
 
 @app.route('/')
 def index():
   return 'Correct path: 192.168.4.1/rheaserver'
+
+@app.route('/log')
+def log():
+  cf = open('log/testlog.csv','r')
+  with cf:
+    record = csv.DictReader(cf)
+    columnNames=['MAC','Firmware','RSSI']
+    return render_template('log.html', records=record, colnames=columnNames)
 
 @app.route('/rheaserver/', methods=['GET'])
 def rheaserver():
@@ -13,6 +22,12 @@ def rheaserver():
     rssi = request.args.get('rssi', default='0')
     fw = request.args.get('fw', default='NA')
     plid = request.args.get('plid', default='NA') 
+
+    f=open("log/testlog.csv","a+")
+    with f:
+      writer = csv.writer(f)
+      writer.writerow([mac,fw,rssi])
+
   return jsonify(isError= False, 
                  message= "Success", 
                  statusCode= 200, 
