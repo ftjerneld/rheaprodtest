@@ -49,7 +49,7 @@ Change:
 to
 DAEMON_CONF="/etc/hostapd/hostapd.conf"
 
-Check the DAEMON_OPTS="" is preceded by a #, so is #DAEMON_OPTS=""
+Check the DAEMON_OPTS="" is preceded by a #, so it is #DAEMON_OPTS=""
 
 iv) Configure dnsmasq
 sudo nano /etc/dnsmasq.conf
@@ -76,15 +76,15 @@ The line 'nohooks wpa_supplicant' will stop the network wifi from starting if yo
 
 !!! Comment the new lines above to enable the Pi's wifi again !!!
 
-2. Autostart flask
+2. Install server
+- Create folder /home/pi/rheaserver
+- Copy the server files from github: git clone https://github.com/ftjerneld/rheaprodtest.git to the rheaserver folder. The file rheaserver.py is the actual server that receives the requests from the DUT 
+
+3. Autostart flask
 Flask is used as webserver. To get it to auto start add service in /etc/systemd/system
+- copy rheaserver.service to /etc/systemd/system
 - user shall be root in order to use port 80
 - run sudo systemctl enable rheaserver.service
 - run sudo systemctl daemon-reload after each modification
-
-3. Install server
-- Create folder /home/pi/rheaserver
-- Copy the files in repo https://github.com/ftjerneld/rheaprodtest.git to the rheaserver folder. The file rheaserver.py is the actual server that receives the requests from the DUT 
-
 
 
